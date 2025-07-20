@@ -1,20 +1,42 @@
-import { useEffect, useState } from 'react';
-import GoalList from './components/GoalList';
-import { getGoals } from './services/goalService';
+import { useEffect, useState } from "react";
+import GoalList from "./components/GoalList";
+import GoalForm from "./components/GoalForm";
+import './styles.css';
+
+
 
 function App() {
   const [goals, setGoals] = useState([]);
 
   useEffect(() => {
-    getGoals()
-      .then(data => setGoals(data))
-      .catch(error => console.error("Fetch error:", error));
+    fetch("http://localhost:3000/goals")
+      .then((r) => r.json())
+      .then(setGoals);
   }, []);
+
+  function addGoal(newGoal) {
+    setGoals([...goals, newGoal]);
+  }
+
+  function deleteGoal(id) {
+    setGoals(goals.filter((goal) => goal.id !== id));
+  }
+
+  function updateGoal(updatedGoal) {
+    setGoals(goals.map((goal) =>
+      goal.id === updatedGoal.id ? updatedGoal : goal
+    ));
+  }
 
   return (
     <div className="App">
       <h1>Smart Goal Planner</h1>
-      <GoalList goals={goals} />
+      <GoalForm onAddGoal={addGoal} />
+      <GoalList
+        goals={goals}
+        onDelete={deleteGoal}
+        onUpdate={updateGoal}
+      />
     </div>
   );
 }

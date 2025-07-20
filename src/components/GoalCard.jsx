@@ -1,16 +1,36 @@
-function GoalCard({ goal }) {
-  const { name, targetAmount, savedAmount, category, deadline } = goal;
-  const percent = Math.min((savedAmount / targetAmount) * 100, 100).toFixed(1);
+function GoalCard({ goal, onDelete, onUpdate }) {
+  const { id, title, balance, targetAmount } = goal;
+
+  function handleDeposit() {
+    const newAmount = parseFloat(prompt("Enter deposit amount:"));
+    if (!isNaN(newAmount)) {
+      const updatedGoal = { ...goal, balance: balance + newAmount };
+
+      fetch(`http://localhost:3000/goals/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedGoal),
+      })
+        .then((r) => r.json())
+        .then(onUpdate);
+    }
+  }
+
+  function handleDelete() {
+    fetch(`http://localhost:3000/goals/${id}`, {
+      method: "DELETE",
+    }).then(() => onDelete(id));
+  }
 
   return (
-    <div style={{ border: '1px solid #ccc', margin: '1rem', padding: '1rem' }}>
-      <h3>{name}</h3>
-      <p>Category: {category}</p>
+    <div className="goal-card">
+      <h3>{title}</h3>
+      <p>Balance: ${balance}</p>
       <p>Target: ${targetAmount}</p>
-      <p>Saved: ${savedAmount}</p>
-      <p>Deadline: {deadline}</p>
-      <progress value={savedAmount} max={targetAmount}></progress>
-      <p>{percent}% complete</p>
+      <button onClick={handleDeposit}>Deposit</button>
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 }

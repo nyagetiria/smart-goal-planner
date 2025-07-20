@@ -1,14 +1,16 @@
-import GoalCard from './GoalCard';
+import GoalCard from "./GoalCard";
 
-function GoalList({ goals }) {
+function GoalList({ goals, onDelete, onUpdate }) {
   return (
     <div>
-      <h2>Your Goals</h2>
-      {goals.length === 0 ? (
-        <p>No goals yet</p>
-      ) : (
-        goals.map(goal => <GoalCard key={goal.id} goal={goal} />)
-      )}
+      {goals.map((goal) => (
+        <GoalCard
+          key={goal.id}
+          goal={goal}
+          onDelete={onDelete}
+          onUpdate={onUpdate}
+        />
+      ))}
     </div>
   );
 }
