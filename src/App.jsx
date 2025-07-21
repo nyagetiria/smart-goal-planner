@@ -3,8 +3,6 @@ import GoalList from "./components/GoalList";
 import GoalForm from "./components/GoalForm";
 import './styles.css';
 
-
-
 function App() {
   const [goals, setGoals] = useState([]);
 
@@ -32,11 +30,7 @@ function App() {
     <div className="App">
       <h1>Smart Goal Planner</h1>
       <GoalForm onAddGoal={addGoal} />
-      <GoalList
-        goals={goals}
-        onDelete={deleteGoal}
-        onUpdate={updateGoal}
-      />
+      <GoalList goals={goals} onDelete={deleteGoal} onUpdate={updateGoal} />
     </div>
   );
 }
