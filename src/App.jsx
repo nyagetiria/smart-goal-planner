@@ -29,7 +29,7 @@ function App() {
   return (
     <div className="App">
       <h1>Smart Goal Planner</h1>
-      <GoalForm onAddGoal={addGoal} />
+      <GoalForm onSubmit={addGoal} />
       <GoalList goals={goals} onDelete={deleteGoal} onUpdate={updateGoal} />
     </div>
   );

@@ -2,7 +2,7 @@
   "goals": [
     {
       "id": 1,
-      "title": "Save for a new laptop",
+      "title": "Save for a laptop",
       "amount": 500,
       "progress": 100
     },
@@ -13,22 +13,16 @@
       "progress": 250
     },
     {
-      "title": "new car",
-      "amount": 1457,
-      "progress": 0,
+      "title": "shoes",
+      "amount": 56,
+      "amountSaved": 0,
       "id": 3
     },
     {
-      "title": "house",
-      "amount": 5678,
-      "progress": 0,
+      "title": "a house",
+      "amount": 5433,
+      "amountSaved": 0,
       "id": 4
-    },
-    {
-      "title": "new phone",
-      "targetAmount": 120,
-      "balance": 0,
-      "id": 6
     }
   ]
 }

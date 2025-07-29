@@ -1,25 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function GoalForm({ onAddGoal }) {
+function GoalForm({ onSubmit, goal = null, onCancel }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(0);
+
+  useEffect(() => {
+    if (goal) {
+      setTitle(goal.title);
+      setAmount(goal.amount);
+    }
+  }, [goal]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
+    const updatedGoal = {
+      ...goal,
+      title,
+      amount: parseFloat(amount)
+    };
+
     const newGoal = {
       title,
       amount: parseFloat(amount),
-      progress: 0
+      amountSaved: 0 
     };
 
-    fetch("http://localhost:3000/goals", {
-      method: "POST",
+    fetch(goal ? `http://localhost:3000/goals/${goal.id}` : "http://localhost:3000/goals", {
+      method: goal ? "PATCH" : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newGoal)
+      body: JSON.stringify(goal ? updatedGoal : newGoal)
     })
       .then((r) => r.json())
-      .then(onAddGoal);
+      .then(onSubmit);
 
     setTitle("");
     setAmount(0);
@@ -27,7 +40,7 @@ function GoalForm({ onAddGoal }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Add a Goal</h2>
+      <h2>{goal ? "Edit Goal" : "Add a Goal"}</h2>
       <input
         type="text"
         placeholder="Goal title"
@@ -42,7 +55,8 @@ function GoalForm({ onAddGoal }) {
         onChange={(e) => setAmount(e.target.value)}
         required
       />
-      <button type="submit">Add Goal</button>
+      <button type="submit">{goal ? "Update Goal" : "Add Goal"}</button>
+      {goal && <button type="button" onClick={onCancel}>Cancel</button>}
     </form>
   );
 }
